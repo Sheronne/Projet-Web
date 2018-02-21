@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Interventions</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+
+<body>
+	<div id="main">
+		<div id="flex-style">
+			<div class="element" id="formulaire">
+				<h1>Declarer une intervention</h1>
+				<form method="post" id="form" v-on:submit.prevent="onSubmit">
+					<div>
+						<label for="id">ID :</label>
+						<input type="text" id="id" v-model="row.id"></input>
+					</div>
+					<div>
+						<label for="titre">Titre :</label>
+						<input type="text" id="titre" v-model="row.titre"></input>
+					</div>
+					<div>
+						<label for="resume">Resume :</label>
+						<textarea id="resume" v-model="row.resume"></textarea>
+					</div>
+					<div>
+						<label for="affectation">Affectation :</label>
+						<select name="affectation" id="affectation" v-model="row.affectation">
+							<option value="Choisir" selected="selected">Choisir</option>
+							<option value="Francis">Francis</option>
+							<option value="Jean">Jean</option>
+							<option value="Bernard">Bernard</option>
+						</select>
+					</div>
+					<div>
+						<label for="client">Client :</label>
+						<input type="text" id="client" v-model="row.client"></input>
+					</div>
+					<div>
+						<label for="etat">Etat :</label>
+						<select name="etat" id="etat" v-model="row.etat">
+							<option value="Choisir" selected="selected">Choisir</option>
+							<option value="Enregistre">Enregistrée</option>
+							<option value="En cours">En cours</option>
+							<option value="Termine">Terminée</option>
+						</select>
+					</div>
+					<input type="submit" @click="addRow" value="Enregistrer" />
+					<input type="submit" @click="removeRow" value="Supprimer" />
+				</form>
+			</div>
+			<div class="element" id="tableau">
+				<table id="tableau">
+					<caption>
+						Liste des interventions
+					</caption>
+					<thead>
+						<tr>
+							<th v-for="col in columns" v-on:click="sortTable(col)">{{col}}
+								<div class="arrow" v-if="col == sortColumn" v-bind:class="ascending ? 'arrow_up' : 'arrow_down'"></div>
+
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="row in rows">
+							<td v-for="col in columns">{{row[col]}}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<!-- <div class="pagination">
+							<div class="number" v-for="i in num_pages()" v-bind:class="[i == currentPage ? 'active' : '']" v-on:click="change_page(i)">{{i}}</div>
+						</div> -->
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+	<script>
+		var date = new Date();
+		var tableau = new Vue({
+			el: '#main',
+			data: {
+				ascending: false,
+				sortColumn: '',
+				col:{
+					ID:'',
+					Titre:'',
+					Resume:'',
+					Affectation:'',
+					Client:'',
+					Etat:'',
+					Supprimer:''
+				},
+				row: {
+					id: '',
+					titre: '',
+					resume: '',
+					affectation: '',
+					client: '',
+					date: date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes()
+				},
+				rows: [
+					//{ ID: 1, Titre: "Chandler Bing", Resume: '305-917-1301', Affectation: 'IT Manager', Client: 'IT Manager', Etat: 'IT Manager', Date: 'IT Manager'}
+				]
+			},
+			methods: {
+				"addRow": function addRow() {
+					this.rows.push({ ID: this.row.id, Titre: this.row.titre, Resume: this.row.resume, Affectation: this.row.affectation, Client: this.row.client, Etat: this.row.etat, Date: this.row.date });
+				},
+				"removeRow": function removeRow(index) {
+					this.itemList.splice(index, 1)
+				},
+				"onSubmit": function onSubmit(){},
+				"sortTable": function sortTable(col) {
+					if (this.sortColumn === col) {
+						this.ascending = !this.ascending;
+					} else {
+						this.ascending = true;
+						this.sortColumn = col;
+					}
+
+					var ascending = this.ascending;
+
+					this.rows.sort(function (a, b) {
+						if (a[col] > b[col]) {
+							return ascending ? 1 : -1
+						} else if (a[col] < b[col]) {
+							return ascending ? -1 : 1
+						}
+						return 0;
+					})
+				},
+				// "num_pages": function num_pages() {
+				// 	return Math.ceil(this.rows.length / this.elementsPerPage);
+				// },
+				// "get_rows": function get_rows() {
+				// 	var start = (this.currentPage - 1) * this.elementsPerPage;
+				// 	var end = start + this.elementsPerPage;
+				// 	return this.rows.slice(start, end);
+				// },
+				// "change_page": function change_page(page) {
+				// 	this.currentPage = page;
+				// }
+			},
+			computed: {
+				"columns": function columns() {
+					if (this.rows.length == 0) {
+						return [];
+					}
+					return Object.keys(this.rows[0])
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>
