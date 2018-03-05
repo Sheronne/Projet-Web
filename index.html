@@ -74,7 +74,17 @@
 							</td>
 							<td v-for="col in columns">{{row[col]}}</td>
 							<td>
-								<button @click="showModal = true">Details</button>
+								<div id="app">
+									<button id="show-modal" @click="showModal = true">Show Modal</button>
+									<!-- use the modal component, pass in the prop -->
+									<modal v-if="showModal" @close="showModal = false">
+									  <!--
+										you can use custom content here to overwrite
+										default content
+									  -->
+									  <h3 slot="header">custom header</h3>
+									</modal>
+								  </div>
 							</td>
 							<td>
 								<input type="image" name="supprimer" src="/Button1.jpg" border="0" alt="Submit" @click="removeThisRow(index)" />

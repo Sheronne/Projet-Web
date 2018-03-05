@@ -49,16 +49,17 @@ var tableau = new Vue({
         },
         "onSubmit": function onSubmit() {
         },
-        "removeRow": function removeRow(index) {
+        "removeRow": function removeRow() {
             ///var result = window.confirm("You are about to delete select rows. Are you sure?");
             var result = true;
-            if (result) {
-                var index = this.rows.indexOf(index);
-                if (index === -1) {
-                    return;
+            for (var i = 0; i <= this.rows.length; i++)
+                if (result) {
+                    var index = this.rows.indexOf(document.querySelector('#delbox').checked);
+                    if (index === -1) {
+                        return;
+                    }
+                    this.rows.splice(index, 1);
                 }
-                this.rows.splice(index, 1);
-            }
             localStorage.setItem('allrows', JSON.stringify(this.rows));
         },
         // "removeRow": function removeRow(checkbox) {
@@ -147,12 +148,4 @@ var tableau = new Vue({
 // register modal component
 Vue.component('modal', {
     template: '#modal-template'
-  })
-  
-  // start app
-  new Vue({
-    el: '#app',
-    data: {
-      showModal: false
-    }
   })
