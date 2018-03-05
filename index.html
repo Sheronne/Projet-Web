@@ -52,32 +52,95 @@
 				</form>
 			</div>
 			<div class="element" id="tableau">
+				<input type="text" id="myInput" @keyup="" placeholder="Recherche... " />
 				<table id="tab">
 					<caption>
 						Liste des interventions
 					</caption>
 					<thead>
 						<tr>
+							<th>Sel.</th>
 							<th v-for="col in columns" v-on:click="sortTable(col)">{{col}}
 								<div class="arrow" v-if="col == sortColumn" v-bind:class="[ascending ? 'arrow_up' : 'arrow_down']"></div>
 							</th>
+							<th>Details</th>
+							<th>Suppr.</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="row in get_rows()">
+						<tr v-for="(row, index) in get_rows()">
+							<td>
+								<input type="checkbox" />
+							</td>
 							<td v-for="col in columns">{{row[col]}}</td>
+							<td>
+								<button @click="showModal = true">Details</button>
+							</td>
+							<td>
+								<input type="image" name="supprimer" src="/Button1.jpg" border="0" alt="Submit" @click="removeThisRow(index)" />
+							</td>
 						</tr>
 					</tbody>
 				</table>
 				<div class="pagination">
+					<div id="selligne">
+						<label>Nombre de lignes :</label>
+						<select v-model="elementsPerPage" @change="resPage">
+							<option disabled value="">Choisissez</option>
+							<option v-for="n in elementsPerPageOptions" :value="n">{{n}}</option>
+						</select>
+					</div>
 					<div class="number" v-for="i in num_pages()" v-bind:class="[i == currentPage ? 'active' : '']" v-on:click="change_page(i)">{{i}}</div>
 				</div>
 			</div>
 		</div>
+		</section>
 	</div>
+	<div id="app">
+		<button id="show-modal" @click="showModal = true">Show Modal</button>
+		<!-- use the modal component, pass in the prop -->
+		<modal v-if="showModal" @close="showModal = false">
+		  <!--
+			you can use custom content here to overwrite
+			default content
+		  -->
+		  <h3 slot="header">custom header</h3>
+		</modal>
+	  </div>
 	<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
 	<script type="text/javascript" src="javascript.js"></script>
-	
+	<!-- template for the modal component -->
+	<script type="text/x-template" id="modal-template">
+	<transition name="modal">
+	  <div class="modal-mask">
+		<div class="modal-wrapper">
+		  <div class="modal-container">
+  
+			<div class="modal-header">
+			  <slot name="header">
+				default header
+			  </slot>
+			</div>
+  
+			<div class="modal-body">
+			  <slot name="body">
+				default body
+			  </slot>
+			</div>
+  
+			<div class="modal-footer">
+			  <slot name="footer">
+				default footer
+				<button class="modal-default-button" @click="$emit('close')">
+				  OK
+				</button>
+			  </slot>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</transition>
+  </script>
 </body>
 
 </html>

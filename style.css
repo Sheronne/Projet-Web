@@ -1,19 +1,41 @@
+html{
+    background-image: url(bg.jpg)
+}
 #formulaire{
     font: 95% Arial, Helvetica, sans-serif;
     padding: 16px;
-    background: #F7F7F7;
+    background: transparent;
+    /* background: #F7F7F7; */
     margin-right: 1%;
     flex: 20%;
     min-width: 200px;
 }
+#myInput {
+    background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 30%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+}
 #tableau{
+    /* border-width: 2px;
+    border-style: outset;
+    border-color: #2EBC99;
+    border-radius: 1%; */
+    flex: 79%;
+    /* max-height: 580px;
+    overflow:auto; */
+}
+#tab{
     border-width: 2px;
     border-style: outset;
     border-color: #2EBC99;
     border-radius: 1%;
     flex: 79%;
-    min-width: 700px;
-    max-height: 560px;
+    width:100%;
     overflow:auto;
 }
 #flex-style{
@@ -101,8 +123,11 @@ tr{
     text-align: center;
 }
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #958bb896;
 }
+/* tr:nth-child(even) {
+    background-color: #f2f2f2;
+} */
 #tableau{
     width: 100%;
 }
@@ -139,5 +164,74 @@ caption {
   .pagination {
     font-family: 'Open Sans', sans-serif;
     text-align: right;
-    
+    margin-top: 1%;
+    right: 1px;
+  }
+  #selligne{
+      width: 20%;
+      max-height: 23px;
+      margin-top: 1%;
+  }
+  .modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    display: table;
+    transition: opacity .3s ease;
+  }
+  
+  .modal-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  
+  .modal-container {
+    width: 300px;
+    margin: 0px auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+    transition: all .3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  
+  .modal-header h3 {
+    margin-top: 0;
+    color: #42b983;
+  }
+  
+  .modal-body {
+    margin: 20px 0;
+  }
+  
+  .modal-default-button {
+    float: right;
+  }
+  
+  /*
+   * The following styles are auto-applied to elements with
+   * transition="modal" when their visibility is toggled
+   * by Vue.js.
+   *
+   * You can easily play with the modal transition by editing
+   * these styles.
+   */
+  
+  .modal-enter {
+    opacity: 0;
+  }
+  
+  .modal-leave-active {
+    opacity: 0;
+  }
+  
+  .modal-enter .modal-container,
+  .modal-leave-active .modal-container {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
   }
