@@ -26,8 +26,10 @@ html{
     border-color: #2EBC99;
     border-radius: 1%; */
     flex: 79%;
-    /* max-height: 580px;
+    /* min-width: 40%;
     overflow:auto; */
+    min-width: 600px;
+    overflow:auto;
 }
 #tab{
     border-width: 2px;
@@ -36,7 +38,6 @@ html{
     border-radius: 1%;
     flex: 79%;
     width:100%;
-    overflow:auto;
 }
 #flex-style{
     display: flex;

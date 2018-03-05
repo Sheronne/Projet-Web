@@ -8,6 +8,7 @@ var tableau = new Vue({
         ascending: false,
         sortColumn: '',
         showModal: false,
+        search: '',
         // filOptions:['ID','Titre','Resume','Affectation','Client','Etat'],
         col: {
             ID: '',
@@ -43,43 +44,19 @@ var tableau = new Vue({
             if (JSON.parse(localStorage.getItem('allrows')) != null) {
                 this.rows = JSON.parse(localStorage.getItem('allrows'));
             }
-            // for (var i = 0; i <= this.rows.length; i++) {
-            //     this.row.supprimer.innerHTML = '<input type="checkbox" name="del"/>';
-            // }
         },
         "onSubmit": function onSubmit() {
         },
         "removeRow": function removeRow() {
-            ///var result = window.confirm("You are about to delete select rows. Are you sure?");
-            var result = true;
-            for (var i = 0; i <= this.rows.length; i++)
-                if (result) {
-                    var index = this.rows.indexOf(document.querySelector('#delbox').checked);
-                    if (index === -1) {
-                        return;
-                    }
-                    this.rows.splice(index, 1);
-                }
+            console.log(this.rows)
+            for (let i = this.rows.length -1; i >= 0; i--) {
+                console.log(i)
+                if(this.rows[i].del){
+                    this.rows.splice(i,1)
+                } 
+            }
             localStorage.setItem('allrows', JSON.stringify(this.rows));
         },
-        // "removeRow": function removeRow(checkbox) {
-        //     for (var i = 0; i <= this.rows.length; i++) {
-        //         let checkbox = document.querySelector('#delbox');
-        //         console.log(checkbox);
-        //         if (checkbox) {
-        //             this.$delete(this.rows);
-        //         }
-        //     }
-        //     localStorage.setItem('allrows', JSON.stringify(this.rows));
-        // },
-        // "removeRow": function removeRow(index) {
-        //     for (let i = this.rows.length - 1; i = 0; i--) {
-        //         if (this.rows[i].id === id) {
-        //             this.$delete(this.rows, index);
-        //         }
-        //     }
-        //     localStorage.setItem('allrows', JSON.stringify(this.rows));
-        // },
         "removeThisRow": function removeThisRow(index) {
             this.$delete(this.rows, index);
             localStorage.setItem('allrows', JSON.stringify(this.rows));
@@ -142,10 +119,15 @@ var tableau = new Vue({
             }
             return Object.keys(this.rows[0])
         },
+        "filteredList": function filteredList() {
+            return this.rows.filter(post => {
+              return post.titre.toLowerCase().includes(this.search.toLowerCase())
+            })
+          }
     }
 });
 
 // register modal component
 Vue.component('modal', {
     template: '#modal-template'
-  })
+})
