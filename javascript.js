@@ -8,8 +8,8 @@ var tableau = new Vue({
         ascending: false,
         sortColumn: '',
         showModal: false,
-        search: '',
-        // filOptions:['ID','Titre','Resume','Affectation','Client','Etat'],
+        searchString: "",
+        //gridColumns: ['ID', 'Titre', 'Resume', 'Affectation', 'Client', 'Etat'],
         col: {
             ID: '',
             Titre: '',
@@ -47,13 +47,20 @@ var tableau = new Vue({
         },
         "onSubmit": function onSubmit() {
         },
+        filterItems: function (presets) {
+            var app = this;
+            return rows.filter(function (preset) {
+                let regex = new RegExp('(' + app.searchQuery + ')', 'i');
+                return rows.Titre.match(regex);
+            })
+        },
         "removeRow": function removeRow() {
             console.log(this.rows)
-            for (let i = this.rows.length -1; i >= 0; i--) {
+            for (let i = this.rows.length - 1; i >= 0; i--) {
                 console.log(i)
-                if(this.rows[i].del){
-                    this.rows.splice(i,1)
-                } 
+                if (this.rows[i].del) {
+                    this.rows.splice(i, 1)
+                }
             }
             localStorage.setItem('allrows', JSON.stringify(this.rows));
         },
@@ -61,6 +68,13 @@ var tableau = new Vue({
             this.$delete(this.rows, index);
             localStorage.setItem('allrows', JSON.stringify(this.rows));
         },
+        "filterItems": function filterItems(presets) {
+            var app = this;
+            return rows.filter(function(preset) {
+              let regex = new RegExp('(' + app.searchString + ')', 'i');
+              return preset.Titre.match(regex);
+            })
+          },
         "sortTable": function sortTable(col) {
             if (this.sortColumn === col) {
                 this.ascending = !this.ascending;
@@ -78,25 +92,6 @@ var tableau = new Vue({
                 return 0;
             })
         },
-        // "searchArray": function searchArray() {
-        //     // Declare variables
-        //     var input, filter, table, tr, td, i;
-        //     input = document.getElementById("myInput");
-        //     filter = input.value.toUpperCase();
-        //     table = document.getElementById("tab");
-        //     tr = table.getElementsByTagName("tr");
-        //     // Loop through all table rows, and hide those who don't match the search query
-        //     for (i = 0; i < this.rows.length; i++) {
-        //         td = this.rows.length[0];
-        //         if (td) {
-        //             if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        //                 tr[i].style.display = "";
-        //             } else {
-        //                 tr[i].style.display = "none";
-        //             }
-        //         }
-        //     }
-        // },
         "resPage": function resPage() {
             this.currentPage = 1;
         },
@@ -118,12 +113,7 @@ var tableau = new Vue({
                 return ['ID', 'Titre', 'Resume', 'Affectation', 'Client', 'Etat', 'Date'];
             }
             return Object.keys(this.rows[0])
-        },
-        "filteredList": function filteredList() {
-            return this.rows.filter(post => {
-              return post.titre.toLowerCase().includes(this.search.toLowerCase())
-            })
-          }
+        }
     }
 });
 
